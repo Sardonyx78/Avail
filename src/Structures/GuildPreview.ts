@@ -1,4 +1,5 @@
 import Emoji from "./Emoji"
+import Guild from './Guild'
 import SnowDir from "./SnowDir"
 import Bot from "../Bot/Bot"
 import { APIGUILDPREVIEW } from "../constants/Types/Responses"
@@ -18,7 +19,7 @@ export default class GuildPreview {
           this.patch(data)
      }
 
-     patch(data: APIGUILDPREVIEW) {
+     patch(data: APIGUILDPREVIEW): this {
           this.guildID = data.id
 
           this.approximateMemberCount = data.approximate_member_count
@@ -32,13 +33,14 @@ export default class GuildPreview {
           }
 
           this.discoverysplashHash = data.discovery_splash
+          return this
      }
 
-     discoverySplash(options: ImageOptions) {
-          return CDN.discoverySplash(this, options)
+     discoverySplash(options: ImageOptions): string {
+          return CDN.discoverySplash(this, options) as string
      }
 
-     get guild() {
+     get guild(): Guild {
           return this.bot.guilds.get(this.guildID)
      }
 }
