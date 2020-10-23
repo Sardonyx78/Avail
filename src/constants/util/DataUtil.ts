@@ -2,13 +2,14 @@ import { stat, readFile } from "fs/promises"
 import path from "path"
 import { Stream } from "stream"
 import fetch from "node-fetch"
+import { Data } from '../..'
 
 export default class DataUtil {
      constructor() {
           throw new Error(`The ${this.constructor.name} class may not be instantiated.`)
      }
 
-     static async image(image: Data) {
+     static async image(image: Data): Promise<string | null> {
           if (!image) return null
           if (typeof image === "string" && image.startsWith("data:")) return image
           const file = await this.file(image)
@@ -22,7 +23,7 @@ export default class DataUtil {
           if (typeof data === "string") {
                if (/^https?:\/\//.test(data)) return fetch(data).then(d => d.buffer())
                else
-                    return new Promise(async (resolve, reject) => {
+                    return new Promise(async (resolve) => {
                          const file = await stat(path.resolve(data))
 
                          if (!file.isFile()) throw new Error(`ENOENT: no such file, open '${path.resolve(data)}'`)
@@ -31,7 +32,7 @@ export default class DataUtil {
                     })
           } else if (data instanceof Stream) {
                return new Promise((resolve, reject) => {
-                    const buffers: any[] = []
+                    const buffers: Buffer[] = []
                     data.once("error", reject)
                     data.on("data", buffers.push)
                     data.once("end", () => resolve(Buffer.concat(buffers)))

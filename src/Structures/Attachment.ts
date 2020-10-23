@@ -1,6 +1,5 @@
-import { Data } from 'ws';
 import { APIATTACHMENT } from '../constants/Types/Responses';
-import { Snowflake } from '../constants/Types/Types';
+import { Data, Snowflake } from '../constants/Types/Types';
 import DataUtil from '../constants/util/DataUtil';
 
 export default class Attachment {

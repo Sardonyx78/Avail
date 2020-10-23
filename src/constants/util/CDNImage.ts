@@ -11,35 +11,35 @@ export default class CDN {
 
   static BASE = "https://cdn.discordapp.com/"
 
-  static user(user: User, options: ImageOptions) {
+  static user(user: User, options: ImageOptions): string {
        options = Object.assign(this.DEFAULT_OPTIONS, options)
 
        if (user.avatarhash) return this.BASE + `avatars/${user.avatarhash}/${CDN.imageResolver(user.avatarhash, options)}`
        else return this.BASE + `embed/avatars/${user.discriminator % 5}.png`
   }
 
-  static discoverySplash(preview: GuildPreview, options: ImageOptions) {
+  static discoverySplash(preview: GuildPreview, options: ImageOptions): string | null {
        options = Object.assign(this.DEFAULT_OPTIONS, options)
 
        if (preview.discoverysplashHash) return this.BASE + `discovery-splashes/${preview.guildID}/${this.imageResolver(preview.discoverysplashHash, options)}`
        else return null
   }
 
-  static splash(guild: Guild, options: ImageOptions) {
+  static splash(guild: Guild, options: ImageOptions): string | null {
        options = Object.assign(this.DEFAULT_OPTIONS, options)
 
        if (guild.splashhash) return this.BASE + `splashes/${guild.id}/${this.imageResolver(guild.splashhash, options)}`
        else return null
   }
 
-  static icon(guild: Guild, options: ImageOptions) {
+  static icon(guild: Guild, options: ImageOptions): string | null {
        options = Object.assign(this.DEFAULT_OPTIONS, options)
 
        if (guild.iconhash) return this.BASE + `icons/${guild.id}/${this.imageResolver(guild.splashhash, options)}`
        else return null
   }
 
-  static imageResolver(hash: string, options: ImageOptions) {
+  static imageResolver(hash: string, options: ImageOptions): string {
        if (options.dynamic) return `${hash}.${hash.startsWith("a_") ? "gif" : options.type}?size=${options.size}`
        else return `${hash}/${hash}.${options.size}?size=${options.size}`
   }

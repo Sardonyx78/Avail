@@ -12,6 +12,8 @@ import Bot from '../Bot/Bot';
 import DiscordAPIError from '../Errors/DiscordAPIError';
 import { APIGUILD, APIGUILDPREVIEW, APIMEMBER, APIROLE, APITEXTCHANNEL, APIVOICECHANNEL, CHANNEL_TYPES } from '../constants/Types/Responses';
 import { Snowflake, MFA_LEVEL, EXPLICIT_CONTENT_FILTER, PREMIUM_TIER } from '../constants/Types/Types';
+// since its used as a type
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { UserAlike } from '../constants/util/Resolver';
 
 export default class Guild {
@@ -76,7 +78,7 @@ export default class Guild {
           this.patch(data);
      }
 
-     patch(data: APIGUILD) {
+     patch(data: APIGUILD): this {
           this.id = data.id;
           this.systemChannelID = data.system_channel_id;
 
@@ -109,16 +111,17 @@ export default class Guild {
           this.nitroBoostingLevel = data.premium_tier;
           this.allMessagesNotification = !!data.default_message_notifications;
 
+          return this
      }
 
-     async getPreview() {
+     async getPreview(): Promise<GuildPreview> {
           return new GuildPreview(
                this.bot,
                await this.bot.REST.discord<APIGUILDPREVIEW>().guilds(this.id).preview.get(),
           );
      }
 
-     get systemChannel() {
+     get systemChannel(): GuildTextChannel {
           return this.channels.get(this.systemChannelID);
      }
 

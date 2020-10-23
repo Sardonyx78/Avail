@@ -17,13 +17,15 @@ export default class VoiceWSClient extends EventEmitter {
           this.connection = connection
      }
 
-     send(data: GatewayPayload) {
+     send(data: GatewayPayload): GatewayPayload {
           if (!this.controller) throw new DiscordGatewayError("There's none existent WebSocket yet use VoiceWSClient#open first!")
 
           this.controller.send(JSON.stringify(data))
+
+          return data
      }
 
-     open() {
+     open(): undefined {
           this.emit("open")
           this.controller = new WebSocket(`wss://${this.connection.voiceState.guild.voice.endpoint}/?v=4`)
           this.controller.on("close", () => {
@@ -43,9 +45,11 @@ export default class VoiceWSClient extends EventEmitter {
                     session_id: this.connection.bot.ws.sessionID,
                },
           })
+
+          return
      }
 
-     async onMessage(data: GatewayPayload) {
+     async onMessage(data: GatewayPayload): Promise<undefined> {
           this.connection.bot.emit("debug", `[VOICE] [WS] (GUILD_ID ${this.connection.voiceState.guildID}) Received Message: ${data}`)
 
           switch (data.op) {
@@ -97,10 +101,13 @@ export default class VoiceWSClient extends EventEmitter {
                break
           }
           }
+
+          return
      }
 
-     close() {
+     close(): undefined {
           this.emit("closing")
           this.controller.close()
+          return
      }
 }
