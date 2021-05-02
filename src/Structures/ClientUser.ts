@@ -1,5 +1,5 @@
 import User from "./User"
-import Bot from "../Bot/Bot"
+import { Bot } from "../Bot"
 import { APIUSER } from "../constants/Types/Responses"
 import { Data, Snowflake, Status } from '../constants/Types/Types'
 import DataUtil from "../constants/util/DataUtil"

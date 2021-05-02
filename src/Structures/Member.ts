@@ -3,17 +3,18 @@ import Role from "./Role"
 import SnowDir from "./SnowDir"
 import User from "./User"
 import VoiceState from "./VoiceState"
-import Bot from "../Bot/Bot"
+import { Bot } from "../Bot"
 import { APIMEMBER } from "../constants/Types/Responses"
 import { Snowflake } from '../constants/Types/Types'
+import BotVoiceState from './BotVoiceState'
 
 export default class Member {
      public user!: User
      public bot: Bot
      public guild: Guild
      public nick?: string
-
-     voice!: VoiceState
+     public joinDate!: Date
+     public voice!: VoiceState
 
      private roleIDs!: Snowflake[]
 
@@ -30,11 +31,21 @@ export default class Member {
      }
 
      patch(data: APIMEMBER): this {
-          if (data.user) this.bot.users.set(data.user.id, new User(this.bot, data.user))
+          if (data.user) {
+               const user = new User(this.bot, data.user)
+               this.bot.users.set(data.user.id, user)
+               this.user = user
+          }
 
           this.roleIDs = data.roles
-
           this.nick = data.nick
+
+          this.voice = new (this.bot.user.id === data.user.id ? BotVoiceState : VoiceState)(this.bot, this)
+
+          this.voice.mute = data.mute
+          this.voice.deaf = data.deaf
+
+          this.joinDate = new Date(data.joined_at)
 
           return this
      }

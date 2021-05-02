@@ -24,7 +24,7 @@ export default class Mentions {
           } else this.roles = new SnowDir()
           if (channels) this.channels = message.bot.channels.findAll(v => channels.map(x => x.id).includes(v.id))
           else this.channels = new SnowDir()
-          if (channels) this.partialChannels = SnowDir.from(({ id }) => id, channels)
+          if (channels) this.partialChannels = SnowDir.from(channels, ({ id }) => id)
           else this.partialChannels = new SnowDir()
           this.everyone = everyone
      }

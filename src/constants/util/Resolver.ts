@@ -1,4 +1,4 @@
-import Bot from "../../Bot/Bot"
+import { Bot } from "../../Bot/Bot"
 import Guild from "../../Structures/Guild"
 import Member from "../../Structures/Member"
 import User from "../../Structures/User"

@@ -35,15 +35,17 @@ export default class VoiceWSClient extends EventEmitter {
 
           this.controller.on("message", msg => this.onMessage.bind(JSON.parse(msg.toString())))
 
-          this.send({
-               op: 0,
-               d: {
-                    /* eslint-disable camelcase */
-                    server_id: this.connection.voiceState.guildID,
-                    channel_id: this.connection.voiceState.channelID,
-                    token: this.connection.voiceState.guild.voice.token,
-                    session_id: this.connection.bot.ws.sessionID,
-               },
+          this.controller.once("open", () => {
+               this.send({
+                    op: 0,
+                    d: {
+                         /* eslint-disable camelcase */
+                         server_id: this.connection.voiceState.guildID,
+                         channel_id: this.connection.voiceState.channelID,
+                         token: this.connection.voiceState.guild.voice.token,
+                         session_id: this.connection.bot.ws.sessionID,
+                    },
+               })
           })
 
           return

@@ -11,7 +11,8 @@
     "lint:fix": "eslint --fix src --ext .ts",
     "prepublishOnly": "npm test && npm run lint",
     "version": "npm run lint:fix && git add -A src",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "test": "tsc && node test"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +20,7 @@
     "@commitlint/cli": "^9.1.2",
     "@commitlint/config-conventional": "^10.0.0",
     "@types/jest": "^26.0.10",
+    "@types/libsodium-wrappers": "^0.7.8",
     "@types/mime-types": "^2.1.0",
     "@types/node": "^14.6.0",
     "@types/node-fetch": "^2.5.7",
@@ -36,8 +38,10 @@
     "erlpack": "github:discord/erlpack",
     "ffmpeg-static": "^4.2.7",
     "form-data": "^3.0.0",
+    "libsodium-wrappers": "^0.7.8",
     "node-fetch": "^2.6.0",
     "opusscript": "0.0.7",
+    "prism-media": "^1.2.2",
     "sodium-native": "^3.2.0",
     "tslib": "^2.0.0",
     "ws": "^7.3.1",

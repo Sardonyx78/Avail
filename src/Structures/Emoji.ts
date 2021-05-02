@@ -1,7 +1,7 @@
 import Guild from "./Guild"
 import Role from "./Role"
 import SnowDir from './SnowDir'
-import Bot from "../Bot/Bot"
+import { Bot } from "../Bot"
 import { APIEMOJI } from "../constants/Types/Responses"
 import { Snowflake } from '../constants/Types/Types'
 

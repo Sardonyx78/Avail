@@ -2,17 +2,18 @@ import GuildChannel from './GuildChannel';
 import Message from './Message';
 import SnowDir from './SnowDir';
 import TextChannel, { MessageConvertable, MessageOptions } from './TextChannel';
-import Bot from '../Bot/Bot';
+import { Bot } from '../Bot';
 import DiscordAPIError from '../Errors/DiscordAPIError';
 import { APITEXTCHANNEL } from '../constants/Types/Responses';
 import { Snowflake } from '../constants/Types/Types';
+import Guild from './Guild';
 
 
 export default class GuildTextChannel extends GuildChannel implements TextChannel {
      messages = new SnowDir<Snowflake, Message>()
 
-     constructor(bot: Bot, data: APITEXTCHANNEL) {
-          super(bot, data)
+     constructor(bot: Bot, data: APITEXTCHANNEL, guild: Guild) {
+          super(bot, data, guild)
      }
      
      send(options: MessageOptions): Promise<Message>;

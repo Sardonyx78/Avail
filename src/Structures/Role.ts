@@ -3,7 +3,7 @@ import Guild from "./Guild"
 import Member from "./Member"
 import Permissions from "./Permissions"
 import SnowDir from "./SnowDir"
-import Bot from "../Bot/Bot"
+import { Bot } from "../Bot"
 import { APIROLE } from "../constants/Types/Responses"
 import { Snowflake } from '../constants/Types/Types'
 

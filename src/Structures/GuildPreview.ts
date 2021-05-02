@@ -1,7 +1,7 @@
 import Emoji from "./Emoji"
 import Guild from './Guild'
 import SnowDir from "./SnowDir"
-import Bot from "../Bot/Bot"
+import { Bot } from "../Bot"
 import { APIGUILDPREVIEW } from "../constants/Types/Responses"
 import { Snowflake } from '../constants/Types/Types'
 import CDN, { ImageOptions } from "../constants/util/CDNImage"

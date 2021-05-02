@@ -105,7 +105,7 @@ export default class SnowDir<K, V> extends Map<K, V> {
           return e
      }
 
-     public static from<K, V>(fn: (value: V) => K, iterable: Iterable<V>): SnowDir<K, V> {
+     public static from<K, V>(iterable: Iterable<V>, fn: (value: V) => K): SnowDir<K, V> {
           const arr = Array.from(iterable)
           const res = new SnowDir<K, V>()
 

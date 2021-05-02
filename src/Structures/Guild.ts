@@ -8,9 +8,9 @@ import Role from './Role';
 import SnowDir from './SnowDir';
 import SystemChannelFlags from './SystemChannelFlags';
 import VoiceChannel from './VoiceChannel';
-import Bot from '../Bot/Bot';
+import { Bot } from '../Bot';
 import DiscordAPIError from '../Errors/DiscordAPIError';
-import { APIGUILD, APIGUILDPREVIEW, APIMEMBER, APIROLE, APITEXTCHANNEL, APIVOICECHANNEL, CHANNEL_TYPES } from '../constants/Types/Responses';
+import { APICATEGORYCHANNEL, APIGUILD, APIGUILDPREVIEW, APIMEMBER, APIROLE, APITEXTCHANNEL, APIVOICECHANNEL, CHANNEL_TYPES } from '../constants/Types/Responses';
 import { Snowflake, MFA_LEVEL, EXPLICIT_CONTENT_FILTER, PREMIUM_TIER } from '../constants/Types/Types';
 // since its used as a type
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -91,9 +91,11 @@ export default class Guild {
           }
 
           for (const channel of data.channels) {
+               
                let constructedChannel: GuildChannel;
-               if (channel.type === CHANNEL_TYPES.VOICE) constructedChannel = new VoiceChannel(this.bot, channel as APIVOICECHANNEL)
-               else constructedChannel = new GuildTextChannel(this.bot, channel as APITEXTCHANNEL)
+               if (channel.type === CHANNEL_TYPES.VOICE) constructedChannel = new VoiceChannel(this.bot, channel as APIVOICECHANNEL, this)
+               else if (channel.type !== CHANNEL_TYPES.CATEGORY) constructedChannel = new GuildTextChannel(this.bot, channel as APITEXTCHANNEL, this)
+               else constructedChannel = new GuildChannel(this.bot, channel, this)
 
                this.bot.channels.set(channel.id, constructedChannel)
                this.channels.set(channel.id, constructedChannel)

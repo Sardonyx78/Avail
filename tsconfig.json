@@ -1,24 +1,25 @@
 {
      "compilerOptions": {
-         "module": "commonjs",
-         "target": "es2019",
-         "types": [
-             "node"
-         ],
-         "strict": true,
-         "moduleResolution": "node",
-         "declaration": true,
-         "resolveJsonModule": true,
-         "removeComments": false,
-         "esModuleInterop": true,
-         "alwaysStrict": true,
-         "pretty": true,
-         "sourceMap": true,
-         "outDir": "dist",
-         "incremental": true,
-         "noEmitHelpers": false,
-         "importHelpers": true,
-         "skipLibCheck": false,
-         "strictNullChecks": true
-     }
- }
+          "module": "commonjs",
+          "target": "es2019",
+          "types": [
+               "node"
+          ],
+          "strict": true,
+          "moduleResolution": "node",
+          "declaration": true,
+          "resolveJsonModule": true,
+          "removeComments": false,
+          "esModuleInterop": true,
+          "alwaysStrict": true,
+          "pretty": true,
+          "sourceMap": true,
+          "outDir": "dist",
+          "incremental": true,
+          "noEmitHelpers": false,
+          "importHelpers": true,
+          "skipLibCheck": false,
+          "strictNullChecks": true
+     },
+     "include": ["src/**/**.ts"]
+}

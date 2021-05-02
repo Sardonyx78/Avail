@@ -1,5 +1,5 @@
 import fetch, { BodyInit, HeaderInit, Response } from "node-fetch"
-import Bot from "./Bot"
+import { Bot } from "./Bot"
 import DiscordAPIError from "../Errors/DiscordAPIError"
 import { HTTP_METHOD } from '../constants/Types/Types'
 

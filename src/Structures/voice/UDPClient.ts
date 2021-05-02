@@ -23,9 +23,9 @@ export default class UDPClient extends EventEmitter {
           ip: string
           port: number
      } = {
-          ip: "",
-          port: 0,
-     }
+               ip: "",
+               port: 0,
+          }
 
      local: {
           ip: string
@@ -110,10 +110,10 @@ export default class UDPClient extends EventEmitter {
           let data = Buffer.allocUnsafe(buffer.length - 12 - LibSodium.crypto_secretbox_MACBYTES)
 
           try {
-               LibSodium.crypto_secretbox_open_easy(data, buffer.slice(12), this.nonce, Buffer.from(this.secret_key!))    
+               LibSodium.crypto_secretbox_open_easy(data, buffer.slice(12), this.nonce, Buffer.from(this.secret_key!))
           } catch (error) {
                this.connection.bot.emit("error", `[VOICE] [UDP] (GUILD_ID ${this.connection.voiceState.guildID}) Couldn't resolve a package`)
-               return undefined               
+               return undefined
           }
 
 

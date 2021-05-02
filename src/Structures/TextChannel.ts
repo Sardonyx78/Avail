@@ -4,7 +4,7 @@ import Channel from "./Channel"
 import Embed from "./Embed"
 import Message from "./Message"
 import SnowDir from './SnowDir'
-import Bot from "../Bot/Bot"
+import { Bot } from "../Bot"
 import { APIDMCHANNEL, APIMESSAGE, APITEXTCHANNEL } from "../constants/Types/Responses"
 import { Snowflake } from '../constants/Types/Types'
 

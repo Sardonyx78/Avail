@@ -4,7 +4,7 @@ import Member from "./Member"
 import PermissionOverwrite, { MemberPermissionOverwrite, RolePermissionOverwrite } from "./PermissionOverwrite"
 import Role from "./Role"
 import SnowDir from "./SnowDir"
-import Bot from "../Bot/Bot"
+import { Bot } from "../Bot"
 import { APITEXTCHANNEL, APIVOICECHANNEL, CHANNEL_TYPES } from "../constants/Types/Responses"
 import { Snowflake } from '../constants/Types/Types'
 
@@ -14,14 +14,14 @@ export default class GuildChannel extends Channel {
      position!: number
      perms!: SnowDir<string, PermissionOverwrite>
 
-     constructor(bot: Bot, data: APITEXTCHANNEL | APIVOICECHANNEL) {
-          super(bot, data)
+     constructor(bot: Bot, data: APITEXTCHANNEL | APIVOICECHANNEL, guild: Guild) {
+          super(bot, data, guild)
      }
 
-     patch(data: APITEXTCHANNEL | APIVOICECHANNEL): this {
+     patch(data: APITEXTCHANNEL | APIVOICECHANNEL, guild?: Guild): this {
           this.id = data.id
           this.type = data.type
-          this.guildID = data.guild_id
+          this.guildID = data.guild_id || guild!.id
           this.position = data.position
           this.perms = new SnowDir<Snowflake, PermissionOverwrite>()
 

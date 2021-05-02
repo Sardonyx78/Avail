@@ -1,8 +1,10 @@
-import { Writable, Readable } from "stream"
+import { Readable } from "stream"
 import UDPClient from "./UDPClient"
 import VoiceWSClient from "./VoiceWSClient"
-import Bot from "../../Bot/Bot"
+import { Bot } from "../../Bot"
 import BotVoiceState from "../BotVoiceState"
+import { FFmpeg, opus as opusEnc, VolumeTransformer } from 'prism-media'
+import { AudioTransmitter } from "./AudioTransmitter"
 
 export default class Connection {
 
@@ -11,22 +13,14 @@ export default class Connection {
      udpClient: UDPClient
      ws: VoiceWSClient
      receiving: Readable
-     transmitting: Writable
+     transmitting = new AudioTransmitter(this)
 
      constructor(voiceState: BotVoiceState) {
           this.bot = voiceState.bot
           this.voiceState = voiceState
           this.ws = new VoiceWSClient(this)
           this.udpClient = new UDPClient(this)
-
           this.receiving = new Readable()
-
-          this.transmitting = new Writable({
-               write: (chunk, _encoding, cb) => {
-                    this.udpClient!.send(chunk)
-                    cb()
-               },
-          })
 
           this.ws.open()
      }
@@ -56,5 +50,17 @@ export default class Connection {
                     ssrc: this.udpClient!.ssrc,
                },
           })
+     }
+
+     play(input: Readable) {
+          const ffmpeg = new FFmpeg({ args: ['-analyzeduration', '0', '-loglevel', '0', '-f', 's16le', '-ar', '48000', '-ac', '2'] })
+          input.pipe(ffmpeg)
+
+          const opus = new opusEnc.Encoder({ channels: 2, rate: 48000, frameSize: 960 })
+
+          const volume = new VolumeTransformer({ type: "s16le", volume: 1 })
+          ffmpeg.pipe(volume).pipe(opus)
+
+          this.transmitting.pipe(opus)
      }
 }

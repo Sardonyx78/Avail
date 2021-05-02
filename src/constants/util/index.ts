@@ -1,3 +1,3 @@
-export * from "./CDNImage"
-export * from "./DataUtil"
-export * from "./Resolver"
+export * as CDNImage from "./CDNImage"
+export * as DataUtil from "./DataUtil"
+export * as Resolver from "./Resolver"

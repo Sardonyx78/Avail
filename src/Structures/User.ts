@@ -2,7 +2,7 @@ import DMChannel from "./DMChannel"
 import Guild from "./Guild"
 import Member from './Member'
 import UserBadges from "./UserBadges"
-import Bot from "../Bot/Bot"
+import { Bot } from "../Bot"
 import { APIUSER } from "../constants/Types/Responses"
 import { Snowflake, NITRO } from '../constants/Types/Types'
 import CDN, { ImageOptions } from "../constants/util/CDNImage"
@@ -17,11 +17,14 @@ export default class User {
      discriminator!: number
      username!: string
      dm!: DMChannel
-     isBot!: () => boolean
 
      constructor(bot: Bot, data: APIUSER) {
           this.bot = bot
           this.patch(data)
+     }
+
+     isBot(): boolean {
+          return false
      }
 
      patch(data: APIUSER): this {

@@ -12,7 +12,7 @@ import EVENT from "../constants/Types/EVENT"
 import { Snowflake } from '../constants/Types/Types'
 import { Resolver } from "../constants/util/Resolver"
 
-export default class Bot extends EventEmitter {
+export class Bot extends EventEmitter {
      mobile: boolean
 
      token: string
@@ -37,7 +37,7 @@ export default class Bot extends EventEmitter {
 
      voiceStates = new SnowDir<Snowflake, Connection>()
 
-     constructor(token: string, options: { mobile?: boolean }) {
+     constructor(token: string, options: { mobile?: boolean } = {}) {
           super()
 
           this.mobile = !!options.mobile
@@ -48,6 +48,12 @@ export default class Bot extends EventEmitter {
 
      connect(): Promise<void> {
           return this.ws.connect()
+     }
+
+     createUnicodeEmoji(emoji: string): Emoji {
+          if ([...emoji].length !== 1) throw new Error("A unicode emoji cant be longer than 1 character")
+
+          return this.emojis.set(emoji, new Emoji(this, { name: emoji }), false)
      }
 
      destroy(): void {
@@ -112,7 +118,7 @@ export default class Bot extends EventEmitter {
 
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export default interface Bot {
+export interface Bot {
      on: <K extends keyof EVENT>(event: K, listener: (...args: EVENT[K]) => any) => this
      once: <K extends keyof EVENT>(event: K, listener: (...args: EVENT[K]) => any) => this
      emit: <K extends keyof EVENT>(event: K, ...args: EVENT[K]) => boolean

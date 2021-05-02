@@ -7,19 +7,21 @@ import MessageFlags from './MessageFlags'
 import SnowDir from "./SnowDir"
 import TextChannel from './TextChannel'
 import User from "./User"
-import Bot from "../Bot/Bot"
+import { Bot } from "../Bot"
 import { APIMESSAGE, APIUSER, MESSAGE_TYPES } from "../constants/Types/Responses"
 import { Snowflake } from '../constants/Types/Types'
+import Emoji from './Emoji'
+import { Reaction } from './Reaction'
 
 export default class Message {
 
      id!: Snowflake
-     reactions: SnowDir<string, User[]>
+     reactions: SnowDir<Snowflake | string, Reaction>
      private cachedAuthorData!: APIUSER
-     private cachedEditedAt?: Date 
+     editedAt?: Date 
      attachments = new SnowDir<Snowflake, Attachment>()
      tts!: boolean
-     embeds: Embed[] = []
+     embeds!: Embed[]
      creation!: Date
      pinned!: boolean
      bot: Bot
@@ -39,29 +41,31 @@ export default class Message {
      }
 
      patch(data: APIMESSAGE): this {
-          this.id = data.id
-          this.authorID = data.author.id
-          this.tts = data.tts
+          this.id = this.id || data.id
+          this.authorID = this.authorID || data.author.id
+          this.tts = this.tts || data.tts
           
+          this.attachments.clear()
           for (const attachment of data.attachments) 
                this.attachments.set(attachment.id, new Attachment(attachment))
           
+          this.embeds = []
           for (const embed of data.embeds)
                this.embeds.push(new Embed(embed))
 
-          this.creation = new Date(data.timestamp)
+          this.creation = this.creation || new Date(data.timestamp)
 
-          this.pinned = data.pinned
+          this.pinned = data.pinned || this.pinned
 
-          this.channelID = data.channel_id
+          this.channelID = this.channelID || data.channel_id
 
           this.mentions = new Mentions(this, data.mentions, data.mention_roles, data.mention_channels, data.mention_everyone)
 
-          this.nonce = data.nonce
+          this.nonce = data.nonce || this.nonce
 
-          this.content = data.content || ""
+          this.content = data.content || this.content || ""
 
-          this.type = data.type
+          this.type = data.type || this.type
 
           this.flags = new MessageFlags(data.flags || 0)
 
@@ -69,15 +73,15 @@ export default class Message {
 
           //this.activity = new MessageApplication(this, data.activity, data.application)
 
+          this.edited = !!data.edited_timestamp
+
+          this.editedAt = new Date(data.edited_timestamp)
+
           return this
      }
 
      get channel(): TextChannel {
           return this.bot.channels.get<TextChannel>(this.channelID)
-     }
-
-     get editedAt(): Date {
-          return this.cachedEditedAt || this.creation
      }
 
      get author(): User {

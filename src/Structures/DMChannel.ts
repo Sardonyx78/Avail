@@ -18,6 +18,7 @@ export default class DMChannel extends TextChannel {
      }
 
      async open(data?: APIDMCHANNEL): Promise<this> {
+          if (this.user === this.bot.user) throw new DiscordAPIError("You can't send messages to yourself!")
           if (data) return this.patch(data)
           else if (this.id) return this
           else
@@ -31,7 +32,9 @@ export default class DMChannel extends TextChannel {
 
      patch(data: APIDMCHANNEL): this {
           if (!data) return this
-          
+
+          if (!this.id && data.id) this.bot.channels.set(data.id, this)
+
           this.id = data.id
           this.lastMessageID = data.last_message_id
 
@@ -40,6 +43,7 @@ export default class DMChannel extends TextChannel {
 
      async send(options: MessageOptions): Promise<Message>
      async send(msg: MessageConvertable, options?: MessageOptions): Promise<Message> {
+          if (this.user === this.bot.user) throw new DiscordAPIError("You can't send messages to yourself!")
           if (!this.id) throw new DiscordAPIError("This DM Channel is not opened yet, use the method DMChannel#open() first to open a DM Channel first!")
 
           return super.send(msg, options)

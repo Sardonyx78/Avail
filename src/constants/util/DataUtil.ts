@@ -2,7 +2,7 @@ import { stat, readFile } from "fs/promises"
 import path from "path"
 import { Stream } from "stream"
 import fetch from "node-fetch"
-import { Data } from '../..'
+import { Data } from ".."
 
 export default class DataUtil {
      constructor() {

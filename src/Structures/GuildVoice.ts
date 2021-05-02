@@ -3,7 +3,7 @@ import Guild from "./Guild"
 import SnowDir from "./SnowDir"
 import VoiceState from "./VoiceState"
 import Connection from "./voice/Connection"
-import Bot from "../Bot/Bot"
+import { Bot } from "../Bot"
 import { Snowflake } from '../constants/Types/Types'
 
 export default class GuildVoice {
@@ -29,7 +29,7 @@ export default class GuildVoice {
      }
 
      get me(): BotVoiceState {
-          return <BotVoiceState>this.states.get(this.bot.user.id)
+          return this.states.get<BotVoiceState>(this.bot.user.id)
      }
 
      set endpoint(val: string) {

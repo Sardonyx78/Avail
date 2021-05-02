@@ -2,16 +2,15 @@ import Guild from './Guild'
 import VoiceChannel from './VoiceChannel'
 import VoiceState from "./VoiceState"
 import Connection from "./voice/Connection"
-import Bot from "../Bot/Bot"
+import { Bot } from "../Bot"
 import { APIVOICESTATE } from "../constants/Types/Responses"
 import { Snowflake } from '../constants/Types/Types'
 
 export default class BotVoiceState extends VoiceState {
-     connection: Connection
+     connection!: Connection
 
      constructor(bot: Bot, data: APIVOICESTATE) {
           super(bot, data)
-          this.connection = new Connection(this)
      }
 
      update(options: { mute?: boolean; deaf?: boolean }): { mute: boolean, deaf: boolean, guild: Guild, channel: VoiceChannel } {
@@ -44,6 +43,18 @@ export default class BotVoiceState extends VoiceState {
      joinChannel(channelID: Snowflake): VoiceChannel
      joinChannel(channelID: Snowflake | null): VoiceChannel | null {
           this.channelID = channelID
+
+          this.bot.ws.send({
+               op: 4,
+               d: {
+                    guild_id: this.guildID,
+                    channel_id: channelID,
+                    self_deaf: this.selfDeaf,
+                    self_mute: this.selfMuted
+               }
+          })
+
+          if (!channelID) this.connection = new Connection(this)
 
           return channelID ? this.channel : null
      }

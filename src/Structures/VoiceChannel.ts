@@ -1,10 +1,11 @@
 import GuildChannel from "./GuildChannel"
-import Bot from "../Bot/Bot"
+import { Bot } from "../Bot"
 import { APIVOICECHANNEL } from "../constants/Types/Responses"
+import Guild from './Guild'
 
 export default class VoiceChannel extends GuildChannel {
-     constructor(bot: Bot, data: APIVOICECHANNEL) {
-          super(bot, data)
+     constructor(bot: Bot, data: APIVOICECHANNEL, guild: Guild) {
+          super(bot, data, guild)
      }
 
      join(): VoiceChannel {
